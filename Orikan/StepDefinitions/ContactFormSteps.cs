@@ -30,7 +30,7 @@ namespace Orikan.StepDefinitions
         [When(@"I leave the text input fields empty with spacebar")]
         public void WhenILeaveTheTextInputFieldsEmptyWithSpacebar()
         {
-            contactFormPage.EnterContactDetails();
+            contactFormPage.EnterContactDetailsWithSpaceInput();
         }
 
         [Then(@"I should see error messages indicating that the text is required")]

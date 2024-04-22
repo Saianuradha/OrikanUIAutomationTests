@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using OrikanUIAutomationTests.PageObjects;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Orikan.PageObjects
             Assert.IsTrue(contactTab.Displayed, "Contact tab is not displayed.");
         }
 
-        public void EnterContactDetails()
+        public void EnterContactDetailsWithSpaceInput()
         {
             driver.FindElement(FirstNameBy).SendKeys(Keys.Tab);
             driver.FindElement(LastNameBy).SendKeys(Keys.Tab);
@@ -44,6 +45,19 @@ namespace Orikan.PageObjects
             driver.FindElement(PostcodeBy).SendKeys(Keys.Tab);
             driver.FindElement(CityBy).SendKeys(Keys.Tab);
            
+        }
+        public void EnterContactDetails(string firsName,string lastName,string address,string postCode,string city)
+        {
+            driver.FindElement(FirstNameBy).SendKeys(firsName);
+            driver.FindElement(LastNameBy).SendKeys(lastName);
+            driver.FindElement(AddressLine1).SendKeys(address);
+            driver.FindElement(PostcodeBy).SendKeys(postCode);
+            driver.FindElement(CityBy).SendKeys(city);
+
+            IWebElement stateDropDown = driver.FindElement(StateBy);
+            SelectElement selectElement = new SelectElement(stateDropDown);
+            selectElement.SelectByText("Australian Capital Territory");
+
         }
 
         public void VerifyTextFieldValidationMsgDisplayed()

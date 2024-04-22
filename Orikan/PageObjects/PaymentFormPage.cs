@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using OrikanUIAutomationTests.PageObjects;
 using System;
 using System.Collections.Generic;
@@ -22,10 +23,9 @@ namespace Orikan.PageObjects
         public By paymentTabBy = By.XPath("//div[text()='Payment']");
         public By nextButtonBy = By.XPath("//button[text()='Next']");
         public By CardHolderNameBy = By.Id("cardHolderName");
-        public By LastNameBy = By.Id("lastName");
-        public By AddressLine1 = By.Id("addressLine1");
-        public By PostcodeBy = By.Id("postcode");
-        public By CityBy = By.Id("city");
+        public By CardNumberBy = By.Id("cardNumber");
+        public By CardCVVBy = By.Id("cardCVV");
+        public By CardExpiryMonthBy = By.Id("cardExpiryMonth");
         public By CardExpiryYear = By.Id("cardExpiryYear");
 
         #endregion Locators
@@ -49,6 +49,21 @@ namespace Orikan.PageObjects
         public void EnterExpiryDetails(string pastYear)
         {
             driver.FindElement(CardHolderNameBy).SendKeys(pastYear);
+        }
+
+        public void EnterCardHolderDetails(string v1, string v2, string v3, string v4)
+        {
+            driver.FindElement(CardHolderNameBy).SendKeys("Sai");
+
+            IWebElement checkbox = driver.FindElement(By.Id("cardTypeVISA"));
+            checkbox.Click();
+
+            driver.FindElement(CardNumberBy).SendKeys(v1);
+            driver.FindElement(CardCVVBy).SendKeys(v2);
+            IWebElement CardExpiryMonth = driver.FindElement(CardExpiryMonthBy);
+            SelectElement selectElement = new SelectElement(CardExpiryMonth);
+            selectElement.SelectByText("March");
+            driver.FindElement(CardExpiryYear).SendKeys(v4);
         }
     }
 }
