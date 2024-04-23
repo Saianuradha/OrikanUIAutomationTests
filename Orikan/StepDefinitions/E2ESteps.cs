@@ -11,13 +11,14 @@ using TechTalk.SpecFlow;
 
 namespace Orikan.StepDefinitions
 {
-    public class E2eSteps
+    [Binding]
+    public class E2ESteps
     {
         private IWebDriver driver;
         private RegistrationFormPage registrationPage;
         private ContactFormPage contactFormPage;
         private PaymentFormPage paymentFormPage;
-        public E2eSteps(IWebDriver driver) {
+        public E2ESteps(IWebDriver driver) {
             
             this.driver = driver;
             this.registrationPage = new RegistrationFormPage(driver);
@@ -35,43 +36,49 @@ namespace Orikan.StepDefinitions
         [When(@"I enter details on Contact form")]
         public void WhenIEnterDetailsOnContactForm()
         {
-            contactFormPage.EnterContactDetails("Sai","Jandhyala","WindsorPark","0632","Auckland");
+            contactFormPage.EnterContactDetails("Sai", "Jandhyala", "WindsorPark", "0632", "Auckland");
         }
 
         [When(@"i'm on Payment form")]
-        public void WhenImOnPaymentForm()
+            public void WhenImOnPaymentForm()
+            {
+                paymentFormPage.VerifyPaymentTabDisplayed();
+            }
+
+            [When(@"I enter Card holder details")]
+            public void WhenIEnterCardHolderDetails()
+            {
+                paymentFormPage.EnterCardHolderDetails("12345678", "999", "March", "2030");
+            }
+
+            [When(@"I agree the terms and conditions")]
+            public void WhenIAgreeTheTermsAndConditions()
+            {
+                IWebElement checkbox = driver.FindElement(By.Id("agreedToTerms"));
+                ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", checkbox);
+                checkbox.Click();
+            }
+
+            [When(@"I click on sumbit button")]
+            public void WhenIClickOnSumbitButton()
+            {
+                IWebElement submitButton = driver.FindElement(By.XPath("//button[@class='wizard-button primary']"));
+                submitButton.Click();
+            }
+        [When(@"I am on the contact form page")]
+        public void WhenIAmOnTheContactFormPage()
         {
-           paymentFormPage.VerifyPaymentTabDisplayed();
+            contactFormPage.VerifyContactTabDisplayed();
         }
 
-        [When(@"I enter Card holder details")]
-        public void WhenIEnterCardHolderDetails()
-        {
-            paymentFormPage.EnterCardHolderDetails("12345678", "999", "March", "2030");
-        }
-
-        [When(@"I agree the terms and conditions")]
-        public void WhenIAgreeTheTermsAndConditions()
-        {
-            IWebElement checkbox = driver.FindElement(By.Id("agreedToTerms"));
-            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", checkbox);
-            checkbox.Click();
-        }
-
-        [When(@"I click on sumbit button")]
-        public void WhenIClickOnSumbitButton()
-        {
-            IWebElement submitButton = driver.FindElement(By.XPath("//button[@class='wizard-button primary']"));
-            submitButton.Click();
-        }
-
-        [Then(@"I should see sucessfully register message\")]
-        public void ThenIShouldSeeSucessfullyRegisterIserMessage_()
+        [Then(@"I should see sucessfully register message")]
+        public void ThenIShouldSeeSucessfullyRegisterMessage()
         {
             IWebElement sucessfulToastMsg = driver.FindElement(By.XPath("//div[@class='toast-message success active']"));
             Assert.IsTrue(sucessfulToastMsg.Displayed);
             Assert.That(sucessfulToastMsg.Text, Is.EqualTo("Successfully registered user"));
         }
+
 
 
     }
