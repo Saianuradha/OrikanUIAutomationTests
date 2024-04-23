@@ -20,5 +20,5 @@ Scenario Outline: Create account sucessfully
 
 	Examples: 
 	| Email | Password | ConfirmPassword |
-	| "sai@orikan.com"     |  "123123"       |    "123123"  |
+	| "sai@orikan.com"     |  "Orikan@1234"       |    "Orikan@1234"  |
 	
